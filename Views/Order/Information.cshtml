@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <!-- Delivery info -->
+    <div class="col-md-8">
+        <form name="deliveryForm" ng-controller="deliveryController as vm"
+              ng-submit="deliveryForm.$valid && vm.submitOrder()" novalidate>
+            <!--Panel-->
+            <div class="panel panel-green panel-inverse">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Thông tin khách hàng</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row xsmall-margin">
+                            <div class="col-md-7">
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">
+                                        Họ tên <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" ng-model="vm.getDeliveryInfo().name" required />
+                                    </div>
+                                </div>
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">
+                                        Điện thoại <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" ng-model="vm.getDeliveryInfo().phone" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">
+                                        Email
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="email" class="form-control" ng-model="vm.getDeliveryInfo().email" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Panel-->
+            <div class="panel panel-green panel-inverse">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Thông tin giao hàng</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row xsmall-margin">
+                            <div class="col-md-7">
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">
+                                        Địa chỉ <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" ng-model="vm.getDeliveryInfo().address" required />
+                                    </div>
+                                </div>
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">Dặn dò </label>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" rows="4" ng-model="vm.getDeliveryInfo().note"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group xsmall-margin">
+                                    <label class="control-label col-md-4">
+                                        Quận <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" ng-model="vm.getDeliveryInfo().district" required>
+                                            <option value="1">Quận 1</option>
+                                            <option value="3">Quận 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-7">
+                    <p><i><span class="required">*</span> Thông tin bắt buộc</i></p>
+                </div>
+                <div class="col-md-5">
+                    <button class="btn btn-green btn-block btn-lg">
+                        <i class="left-icon fa fa-check"></i><b>Thanh toán</b>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-4">
+        <div class="panel panel-green panel-float" id="floatting-panel" ng-controller="orderController as vm">
+            <div class="panel-heading">
+                <h4 class="panel-title">Giỏ hàng của bạn</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-no-border table-cart" ng-hide="vm.isShoppingCartEmpty()">
+                    <thead>
+                        <tr>
+                            <th width="20%"></th>
+                            <th width="60%"></th>
+                            <th width="20%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="orderItem in vm.getShoppingCart()">
+                            <td>
+                                <div class="ratio-wrapper ratio-wrapper-1-1">
+                                    <div class="ratio-item">
+                                        <div class="img-container bg-darkgray">
+                                            <img class="img-responsive"
+                                                 ng-src="/Content/upload/{{orderItem.image}}.jpg"
+                                                 err-src="/Content/imgs/default_product.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cart-item-name" ng-bind="orderItem.name"></div>
+                                <ul class="sub-rows">
+                                    <li ng-repeat="extra in orderItem.extraList | filter: vm.hasExtra()">
+                                        {{extra.quantity || 0}}  x  {{extra.name}}
+                                        ({{extra.price | currency : "" : 0}}đ)
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <p class="align-right">x {{orderItem.quantity}}</p>
+                                <p class="align-right">{{vm.getOrderCost(orderItem) | currency : "" : 0}}đ</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-msg" ng-show="vm.isShoppingCartEmpty()">
+                    Bạn chưa có sản phẩm nào trong giỏ hàng.
+                </div>
+            </div>
+            <div class="panel-footer" ng-hide="vm.isShoppingCartEmpty()" hidden>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a class="btn btn-white" ng-click="vm.getAllProducts()">
+                            Tiếp tục<i class="right-icon fa fa-check"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="total-cost">{{vm.getTotalCost() | currency : "" : 0}}đ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $('#shopping-step-3').addClass('active');
+    </script>
+}

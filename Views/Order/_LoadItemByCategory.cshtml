@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Hotel.Data.Product>
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <!-- Product Block -->
+    @foreach (var item in Model)
+    {
+        <div class="product-block">
+            <div class="ratio-wrapper ratio-wrapper-3-4">
+                <div class="ratio-item">
+                    <div class="content">
+                        <div class="img-container">
+                            @if (item.PicURL == null)
+                            {
+                                <img src="~/Content/imgs/Default_product_img.jpg" />
+                            }
+                            else
+                            {
+                                <img src="../../Content/imgs/product/@item.PicURL" />
+                            }
+                        </div>
+                        <div class="brief">
+                            <div class="name">@item.ProductName</div>
+                            <div class="price">@item.Price đ</div>
+                        </div>
+                        <div class="control-group">
+                            <a class="btn btn-transparent btn-more">
+                                <i class="left-icon fa fa-search"></i>Chi tiết sản phẩm
+                            </a>
+                            <a class="btn btn-transparent">
+                                <i class="left-icon fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    }
+   
+</div>
+
+
+<div class="cover" style="display: none">
+    <a class="btn-close"></a>
+    <h4 class="header">Dùng thêm:</h4>
+    <input type="hidden" id="hiddenRemainingExtra" value="5" />
+    <ul>
+        <li>
+            <div class="row xsmall-margin extra-item">
+                <div class="col-md-3">
+                    <div class="extra-count" data-price="10000" data-quantity="0" data-max="3">
+                        <div class="extra-quantity" data-action="plus-extra"></div>
+                        <div class="extra-minus" data-action="minus-extra">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="extra-name">Thêm sữa</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="extra-price">5.000đ</div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="row xsmall-margin extra-item">
+                <div class="col-md-3">
+                    <div class="extra-count" data-price="10000" data-quantity="0" data-max="3">
+                        <div class="extra-quantity" data-action="plus-extra"></div>
+                        <div class="extra-minus" data-action="minus-extra">
+                            <i class="fa fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="extra-name">Thêm Rum</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="extra-price">15.000đ</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="footer">
+        <div class="row no-margin">
+            <div class="col-xs-5">
+                <div class="incrementer">
+                    <a class="inc-control inc-minus"></a>
+                    <input type="text" class="inc-input" value="1" readonly />
+                    <a class="inc-control inc-plus"></a>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                <div class="total-price">40.000đ</div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <button type="button" class="btn btn-green btn-sm btn-block">
+            <i class="left-icon fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+        </button>
+    </div>
+</div>

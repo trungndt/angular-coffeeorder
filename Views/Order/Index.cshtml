@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8" ng-controller="productController as vm">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label>Tìm theo: </label>
+                        <div class="row small-margin">
+                            <div class="col-md-4">
+                                <input class="form-control form-green" placeholder="Tên món" ng-model="vm.filter.name" />
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control form-green" ng-model="vm.filter.category">
+                                    <option selected="selected" value="">Loại món</option>
+                                    <option ng-repeat="category in vm.categories" value="{{category.id}}">
+                                        {{category.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control form-green">
+                                    <option>Nhà cung cấp</option>
+                                    <option>Lotte</option>
+                                    <option>KFC</option>
+                                    <option>Khác</option>
+                                </select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Sắp xếp theo giá: </label>
+                        <div class="row no-margin">
+                            <div class="col-md-6">
+                                <input type="radio" name="sort-by-price" ng-model="vm.sortBy" value="+price" class="nice-check nice-check-sm" id="sort1" />
+                                <label for="sort1">Tăng dần</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="radio" name="sort-by-price" ng-model="vm.sortBy" value="-price" class="nice-check nice-check-sm" id="sort2" />
+                                <label for="sort2">Giảm dần</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row" id="product-container">
+            <div class="col-xs-12 col-sm-6 col-md-4"
+                 dir-paginate="product in vm.productList | filter: vm.filter | orderBy: vm.sortBy | itemsPerPage: 9">
+                <!-- Product Block -->
+                <div class="product-block">
+                    <div class="ratio-wrapper ratio-wrapper-3-4">
+                        <div class="ratio-item">
+                            <input type="hidden" value="product.category" />
+                            <div class="content">
+                                <div class="img-container">
+                                    <img ng-src="/Content/upload/{{product.image}}.jpg" err-src="/Content/imgs/default_product.jpg" />
+                                </div>
+                                <div class="brief">
+                                    <div class="name" ng-bind="product.name"></div>
+
+                                    <div class="price">{{product.price | currency : "" : 0}}đ</div>
+                                </div>
+                                <div class="control-group">
+                                    <a class="btn btn-transparent btn-more" ng-click="vm.viewProduct(product)">
+                                        <i class="left-icon fa fa-search"></i>Chi tiết sản phẩm
+                                    </a>
+                                    <a class="btn btn-transparent" ng-click="vm.addProductToCart(product)">
+                                        <i class="left-icon fa fa-shopping-cart"></i>Thêm vào giỏ hàng
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <dir-pagination-controls></dir-pagination-controls>
+    </div>
+    <div class="col-xs-4">
+        <div class="panel panel-green panel-float" id="floatting-panel" ng-controller="orderController as vm" ng-cloak>
+            <div class="panel-heading">
+                <h4 class="panel-title">Giỏ hàng của bạn</h4>
+                <ul class="actions" ng-hide="vm.isShoppingCartEmpty()" hidden>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="#"><i class="left-icon fa fa-pencil"></i>Chỉnh sửa giỏ hàng</a>
+                            </li>
+                            <li>
+                                <a href="#" ng-click="vm.emptyShoppingCart()"><i class="left-icon fa fa-times"></i>Làm trống giỏ hàng</a>
+                            </li>
+                            <li>
+                                <a href="#" ng-click="vm.test()"><i class="left-icon fa fa-times"></i>Console.log</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table table-no-border table-cart" ng-hide="vm.isShoppingCartEmpty()">
+                    <thead>
+                        <tr>
+                            <th width="20%"></th>
+                            <th width="60%"></th>
+                            <th width="20%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="orderItem in vm.getShoppingCart()">
+                            <td>
+                                <div class="ratio-wrapper ratio-wrapper-1-1">
+                                    <div class="ratio-item">
+                                        <div class="img-container bg-darkgray">
+                                            <img class="img-responsive"
+                                                 ng-src="/Content/upload/{{orderItem.image}}.jpg"
+                                                 err-src="/Content/imgs/default_product.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cart-item-name" ng-bind="orderItem.name"></div>
+                                <ul class="sub-rows">
+                                    <li ng-repeat="extra in orderItem.extraList | filter: vm.hasExtra()">
+                                        {{extra.quantity || 0}}  x  {{extra.name}}
+                                        ({{extra.price | currency : "" : 0}}đ)
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <p class="align-right">x {{orderItem.quantity}}</p>
+                                <p class="align-right">{{vm.getOrderCost(orderItem) | currency : "" : 0}}đ</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-msg" ng-show="vm.isShoppingCartEmpty()">
+                    Bạn chưa có sản phẩm nào trong giỏ hàng.
+                </div>
+            </div>
+            <div class="panel-footer" ng-hide="vm.isShoppingCartEmpty()">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a class="btn btn-white" href="/Order/Cart">
+                            Tiếp tục<i class="right-icon fa fa-check"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="total-cost">{{vm.getTotalCost() | currency : "" : 0}}đ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#shopping-step-1').addClass('active');
+    </script>
+}

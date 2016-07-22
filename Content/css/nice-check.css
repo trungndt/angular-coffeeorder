@@ -1,0 +1,121 @@
+/* Base for label styling */
+
+.nice-check:not(:checked),
+.nice-check:checked {
+	position: absolute;
+	left: -9999px;
+}
+
+.nice-check:focus {
+	outline: none !important;
+}
+
+.nice-check:not(:checked) + label,
+.nice-check:checked + label {
+	position: relative;
+	padding-left: 50px;
+	cursor: pointer;
+	font-weight: 100;
+	height: 30px;
+	line-height: 30px;
+}
+/* checkbox aspect */
+
+.nice-check:not(:checked) + label:before,
+.nice-check:checked + label:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #00AA41;
+	background: #fff;
+	border-radius: 50%;
+}
+
+.nice-check:checked + label:before {
+	background-color: #00AA41;
+}
+/* checked mark aspect */
+
+.nice-check:not(:checked) + label:after,
+.nice-check:checked + label:after {
+	content: '✔';
+	position: absolute;
+	top: 0;
+	left: 9px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #fff;
+	transition: all .1s;
+}
+/* checked mark aspect changes */
+
+.nice-check:not(:checked) + label:after {
+	opacity: 0;
+	transform: scale(0);
+}
+
+.nice-check:checked + label:after {
+	opacity: 1;
+	transform: scale(1);
+}
+/* disabled checkbox */
+
+.nice-check:disabled:not(:checked) + label:before,
+.nice-check:disabled:checked + label:before {
+	box-shadow: none;
+	border-color: #bbb;
+	background-color: #ddd;
+}
+
+.nice-check:disabled:checked + label:after {
+	color: #999;
+}
+
+.nice-check:disabled + label {
+	color: #aaa;
+}
+/* accessibility 
+
+.nice-check:checked:active + label:before {
+	background-color: #00AA41;
+}
+
+.nice-check:checked:focus + label:before {
+	border: none;
+	background-color: #00AA41;
+}
+
+.nice-check:not(:checked):focus + label:before {
+	
+	background-color: #fff;
+}*/
+/* hover style just for information */
+
+.nice-check.nice-check-sm:not(:checked) + label,
+.nice-check.nice-check-sm:checked + label {
+	height: 30px;
+	line-height: 18px;
+	padding-left: 23px;
+	position: relative;
+	top: 7px;
+}
+
+.nice-check.nice-check-sm:not(:checked) + label:before,
+.nice-check.nice-check-sm:checked + label:before {
+	width: 18px;
+	height: 18px;
+}
+
+.nice-check.nice-check-sm:not(:checked) + label:after,
+.nice-check.nice-check-sm:checked + label:after {
+	line-height: 18px;
+	left: 3px;
+}
+
+.nice-check.nice-check-sm:checked + label:after {
+	opacity: 1;
+	transform: scale(.8);
+}

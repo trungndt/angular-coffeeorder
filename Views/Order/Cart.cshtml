@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" ng-controller="orderController as vm">
+    <!-- Left panel: cart list -->
+    <div class="col-md-8">
+        <div class="panel panel-green panel-inverse">
+            <div class="panel-heading">
+                <h3 class="panel-title">Giỏ hàng của bạn</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-no-border table-transparent" ng-hide="vm.isShoppingCartEmpty()">
+                    <thead>
+                        <tr>
+                            <th width="20%">
+                                <label>Hình ảnh</label>
+                            </th>
+                            <th width="30%">
+                                <label>Sản phẩm</label>
+                            </th>
+                            <th width="5%" class="align-center">
+                                <label>SL</label>
+                            </th>
+                            <th width="20%" class="align-right">
+                                <label>Thành tiền</label>
+                            </th>
+                            <th width="5%" class="align-center">
+                                <label>Xóa</label>
+                            </th>
+                            <th width="5%" class="align-center">
+                                <label>Sửa</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="orderItem in vm.getShoppingCart() | itemsPerPage: 5">
+                            <td>
+                                <div class="ratio-wrapper ratio-wrapper-16-9">
+                                    <div class="ratio-item">
+                                        <div class="img-container">
+                                            <img class="img-responsive"
+                                                 ng-src="/Content/upload/{{orderItem.image}}.jpg"
+                                                 err-src="~/Content/imgs/default_product.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cart-item-name" ng-bind="orderItem.name"></div>
+                                <ul class="sub-rows">
+                                    <li ng-repeat="extra in orderItem.extraList | filter: vm.hasExtra()">
+                                        {{extra.quantity || 0}}  x  {{extra.name}}
+                                        ({{extra.price | currency : "" : 0}}đ)
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="align-center" ng-bind="orderItem.quantity"></td>
+                            <td class="align-right">{{vm.getOrderCost(orderItem) | currency : "" : 0}}đ</td>
+                            <td class="align-center">
+                                <a class="btn-close" ng-click="vm.removeOrder(orderItem)"></a>
+                            </td>
+                            <td class="align-center">
+                                <a href="#" class="btn-edit" ng-click="vm.viewProduct(orderItem)">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="vertical-align: bottom;">
+                                <b class="pull-right">Tổng cộng</b>
+                            </td>
+                            <td>
+                                <div class="total-cost">{{vm.getTotalCost() | currency : "" : 0}}đ</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <dir-pagination-controls></dir-pagination-controls>
+                <div class="empty-msg" ng-show="vm.isShoppingCartEmpty()">
+                    Bạn chưa có sản phẩm nào trong giỏ hàng.
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row" ng-hide="vm.isShoppingCartEmpty()">
+            <div class="col-md-4">
+                <button class="btn btn-danger btn-block btn-lg" ng-click="vm.emptyShoppingCart()">
+                    <i class="left-icon fa fa-times"></i>Làm trống giỏ hàng
+                </button>
+            </div>
+            <div class="col-md-5 col-md-offset-3">
+                <a class="btn btn-green btn-block btn-lg" href="/Order/Information">
+                    Tiếp theo <i class="right-icon fa fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Right panel: delivery time -->
+    <div class="col-md-4">
+        <div class="panel panel-green panel-inverse">
+            <div class="panel-heading">
+                <h3 class="panel-title">Thời gian giao hàng</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="radio" name="sort-by-price" class="nice-check" id="time1" checked />
+                            <label for="time1">Giao hàng ngay</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="radio" name="sort-by-price" class="nice-check" id="time2" />
+                            <label for="time2">Giao hàng vào thời gian</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <select class="form-control">
+                                <option>19-07-2015</option>
+                                <option>20-07-2015</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control">
+                                <option>15:00</option>
+                                <option>15:15</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#shopping-step-2').addClass('active');
+    </script>
+}

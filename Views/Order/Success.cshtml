@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <!-- Delivery info -->
+    <div class="col-md-12">
+        <div class="empty-msg">
+            Bạn đã đặt mua thành công. Chúng tôi sẽ gọi điện thoại xác nhận sau ít phút.
+        </div>
+        <a class="btn btn-danger btn-lg" href="/Order/Index">
+            <i class="left-icon fa fa-reply"></i>Quay lại mua sắm
+        </a>
+    </div>
+    
+</div>
+@section Scripts {
+    <script>
+        $('#shopping-step-4').addClass('active');
+    </script>
+}
